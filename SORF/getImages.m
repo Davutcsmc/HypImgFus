@@ -74,7 +74,7 @@ dataset.wavelength = hsiData.wavelength;
 end
 
 function [hsiData, I_REF] = getMyData(strDataName,strDataType,ratio)
-addpath('..\dataFunctions');
+addpath('..\DatasetFunctions');
 
 hsiData = getSourceData(strDataName,strDataType,ratio);
 

@@ -1,24 +1,17 @@
 
 clc, clearvars, close all
-% addpath(genpath('../Methods')); addpath(genpath('../../Quality_Indices')); addpath(genpath('../../Outputs'));
 
 %% Get Dataset
 
-for iii=4:2:4
+for iii=1:2
     
     if (iii==1)
-        strDataType = 'PAN'; % PAN, MS
-        strDataName = 'Pavia'; % Salinas, Pavia, Sentetic, data1
+        strDataType = 'MS'; % PAN, MS
+        strDataName = 'Pavia'; % Salinas, Pavia, Sentetic, data1    
     elseif (iii==2)
         strDataType = 'MS'; % PAN, MS
-        strDataName = 'Pavia'; % Salinas, Pavia, Sentetic, data1
+        strDataName = 'Salinas'; % Salinas, Pavia, Sentetic, data1
     elseif (iii==3)
-        strDataType = 'PAN'; % PAN, MS
-        strDataName = 'Salinas'; % Salinas, Pavia, Sentetic, data1
-    elseif (iii==4)
-        strDataType = 'MS'; % PAN, MS
-        strDataName = 'Salinas'; % Salinas, Pavia, Sentetic, data1
-    elseif (iii==5)
         strDataType = 'MS'; % PAN, MS
         strDataName = 'Sentetic'; % Salinas, Pavia, Sentetic, data1
     end
@@ -43,34 +36,28 @@ for iii=4:2:4
     %% Hyperspectral pansharpening
     
     L = nextpow2(max(I_HS(:)));
-    
-    %%%% BlueBand ratio for GF
+    addpath(genpath('../QualityIndices'));   
+    addpath(genpath('../MethodsOnLiterature')); 
     
     %%%% B G R IR weighted ratio for GF
     tic
     [ I_HS_mGF_Res ] = GF_BGRIR_Residual( I_HS,I_PAN, dataset );
     disp(strcat('Comp. time (I_HS_mGF_Res): ',num2str(toc)));
-    cd ..\uptodateReview\toolbox\Quality_Indices
     QI_GF_mGF_Res = QualityIndices(I_HS_mGF_Res(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    cd ..\..\..\GF
-
+    
     %%%% B G R IR weighted ratio for GF
     distPower = 1;
     tic
     [ I_HS_mGF_Res21 ] = GF_BGRIR_Residual2( I_HS,I_PAN, dataset, distPower );
     disp(strcat('Comp. time (I_HS_mGF_Res21): ',num2str(toc)));
-    cd ..\uptodateReview\toolbox\Quality_Indices
     QI_GF_mGF_Res21 = QualityIndices(I_HS_mGF_Res21(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    cd ..\..\..\GF
     
     %%%% B G R IR weighted ratio for GF
     distPower = 1;
     tic
     [ I_HS_mGF_Res31 ] = GF_BGRIR_Residual3( I_HS,I_PAN, dataset, distPower );
     disp(strcat('Comp. time (I_HS_mGF_Res31): ',num2str(toc)));
-    cd ..\uptodateReview\toolbox\Quality_Indices
     QI_GF_mGF_Res31 = QualityIndices(I_HS_mGF_Res31(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    cd ..\..\..\GF
     
 %     %%%% B G R IR weighted ratio for spatial GF
 %     tic
@@ -81,13 +68,11 @@ for iii=4:2:4
 %     cd ..\..\..\GF
     
     % GFPCA
-    cd '..\uptodateReview\toolbox\ilerleme9\methods\GFPCA'
     tic
     I_GFPCA = GFPCA(I_HS,I_PAN,4, 8, 0.001^2);
     disp(strcat('Comp. time (GFPCA): ',num2str(toc)));
-    cd ..\..\..\Quality_Indices
     QI_GFPCA = QualityIndices(I_GFPCA(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    cd ..\..\..\GF
+
   
     % Bayesian Sparse
 %     cd '..\uptodateReview\toolbox\ilerleme9\methods\BayesFusion'
