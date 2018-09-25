@@ -5,6 +5,6 @@
 # Fusion Algorithms given as below
 # 
 # 1. SORF Algorithm (Spectral Ratio and Guided Filter Based Fusion)
-# run GFimprovement.m file
+# run demoRun.m file
 #
 
