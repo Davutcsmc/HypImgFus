@@ -1,4 +1,4 @@
-function [ I_HS_BGRIR ] = GF_BGRIR_Residual3( I_HS,I_PAN, dataset, distPower )
+function [ I_HS_BGRIR ] = GF_BGRIR_Residual4( I_HS,I_PAN, dataset, distPower )
 %GFSEQUENTÝAL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -89,10 +89,10 @@ I_HS_MaskIRR= I_HS_MaskIR- IR_GF.*Mbicubic;
 %%%% residual aradeðerleme
 
 % [agirlikMatrisiB] = agirliklarinHesaplanmasi(I_PAN(:,:,1), I_HS_MaskBR);
-[agirlikMatrisiB] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,1), I_HS_MaskBR,distPower);
-[agirlikMatrisiG] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,2), I_HS_MaskGR,distPower);
-[agirlikMatrisiR] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,3), I_HS_MaskRR,distPower);
-[agirlikMatrisiIR] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
+[agirlikMatrisiB] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,1), I_HS_MaskBR,distPower);
+[agirlikMatrisiG] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,2), I_HS_MaskGR,distPower);
+[agirlikMatrisiR] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,3), I_HS_MaskRR,distPower);
+[agirlikMatrisiIR] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
 
 % rows1 = 2:3:wm; cols1 = 2:3:hm;
 % I_HS_MaskBRorj = I_HS_MaskBR(rows1,cols1);

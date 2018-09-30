@@ -87,17 +87,18 @@ I_HS_MaskRR = I_HS_MaskR - R_GF.*Mbicubic;
 I_HS_MaskIRR= I_HS_MaskIR- IR_GF.*Mbicubic;
 
 %%%% residual aradeðerleme
-rows1 = 2:3:wm; cols1 = 2:3:hm;
-I_HS_MaskBRorj = I_HS_MaskBR(rows1,cols1);
-I_HS_MaskGRorj = I_HS_MaskGR(rows1,cols1);
-I_HS_MaskRRorj = I_HS_MaskRR(rows1,cols1);
-I_HS_MaskIRRorj = I_HS_MaskIRR(rows1,cols1);
 
 % [agirlikMatrisiB] = agirliklarinHesaplanmasi(I_PAN(:,:,1), I_HS_MaskBR);
-[agirlikMatrisiB] = edgePreserveInterpolationAlg2(I_PAN(:,:,1), I_HS_MaskBR,distPower);
-[agirlikMatrisiG] = edgePreserveInterpolationAlg2(I_PAN(:,:,2), I_HS_MaskGR,distPower);
-[agirlikMatrisiR] = edgePreserveInterpolationAlg2(I_PAN(:,:,3), I_HS_MaskRR,distPower);
-[agirlikMatrisiIR] = edgePreserveInterpolationAlg2(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
+[agirlikMatrisiB] = edgePreserveGuidedInterpolationAlg2(I_PAN(:,:,1), I_HS_MaskBR,distPower);
+[agirlikMatrisiG] = edgePreserveGuidedInterpolationAlg2(I_PAN(:,:,2), I_HS_MaskGR,distPower);
+[agirlikMatrisiR] = edgePreserveGuidedInterpolationAlg2(I_PAN(:,:,3), I_HS_MaskRR,distPower);
+[agirlikMatrisiIR] = edgePreserveGuidedInterpolationAlg2(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
+
+% rows1 = 2:3:wm; cols1 = 2:3:hm;
+% I_HS_MaskBRorj = I_HS_MaskBR(rows1,cols1);
+% I_HS_MaskGRorj = I_HS_MaskGR(rows1,cols1);
+% I_HS_MaskRRorj = I_HS_MaskRR(rows1,cols1);
+% I_HS_MaskIRRorj = I_HS_MaskIRR(rows1,cols1);
 
 % I_HS_BRcubic = imresize(I_HS_MaskBRorj,[wm hm], 'bicubic','Antialiasing',true);
 % I_HS_GRcubic = imresize(I_HS_MaskGRorj,[wm hm], 'bicubic','Antialiasing',true);

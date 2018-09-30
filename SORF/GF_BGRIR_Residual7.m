@@ -1,4 +1,4 @@
-function [ I_HS_BGRIR ] = GF_BGRIR_Residual3( I_HS,I_PAN, dataset, distPower )
+function [ I_HS_BGRIR ] = GF_BGRIR_Residual7( I_HS,I_PAN, dataset, distPower )
 %GFSEQUENTÝAL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -12,10 +12,16 @@ end
 I_HS( I_HS<0 ) = 0;
 minV = min(I_HS(:)); maxV = max(I_HS(:));
 [wh,hh,dh] = size(I_HS);
-sRatioB = I_HS ./( repmat(I_HS(:,:,maxInds(1)),[1,1,dh]) +1e-2);
-sRatioG = I_HS ./( repmat(I_HS(:,:,maxInds(2)),[1,1,dh]) +1e-2);
-sRatioR = I_HS ./( repmat(I_HS(:,:,maxInds(3)),[1,1,dh]) +1e-2);
-sRatioIR= I_HS ./( repmat(I_HS(:,:,maxInds(4)),[1,1,dh]) +1e-2);
+
+refBandB = I_HS(:,:,maxInds(1));
+refBandG = I_HS(:,:,maxInds(2));
+refBandR = I_HS(:,:,maxInds(3));
+refBandIR= I_HS(:,:,maxInds(4));
+
+sRatioB = I_HS ./( repmat(refBandB,[1,1,dh]) +1e-2);
+sRatioG = I_HS ./( repmat(refBandG,[1,1,dh]) +1e-2);
+sRatioR = I_HS ./( repmat(refBandR,[1,1,dh]) +1e-2);
+sRatioIR= I_HS ./( repmat(refBandIR,[1,1,dh]) +1e-2);
 %     vsRatio = reshape(sRatio,[wh*hh,dh-1])';
 %     figure(11), plot(vsRatio);
 %     vsMedRatio = medfilt1(vsRatio,3);
@@ -24,7 +30,12 @@ sRatioIR= I_HS ./( repmat(I_HS(:,:,maxInds(4)),[1,1,dh]) +1e-2);
 
 %%%% HS bicubic
 [wm,hm,dm] = size(I_PAN);
-I_HSbicubic = imresize(I_HS,[wm hm], 'bicubic','Antialiasing',true);
+% I_HSbicubic = imresize(I_HS,[wm hm], 'bicubic','Antialiasing',true);
+
+[refBandB_EdgePreserveInterpolation] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,1),refBandB,distPower);
+[refBandG_EdgePreserveInterpolation] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,2),refBandG,distPower);
+[refBandR_EdgePreserveInterpolation] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,3),refBandR,distPower);
+[refBandIR_EdgePreserveInterpolation] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,4),refBandIR,distPower);
 %     sCubicRatio = I_HSbicubic(:,:,1:end-1) ./( I_HSbicubic(:,:,2:end) +1e-2);
 %     vsCubicRatio = reshape(sCubicRatio,[wm*hm,dh-1])';
 %     %     figure(11), plot(vsRatiobicubic);
@@ -49,10 +60,10 @@ clear rows1 cols1;
 r=8;
 epsVal = eps;
 
-B_GF = guidedfilter(I_PAN(:,:,1),I_HSbicubic(:,:,maxInds(1)),r,epsVal); % Fusion of HSI and pan image
-G_GF = guidedfilter(I_PAN(:,:,2),I_HSbicubic(:,:,maxInds(2)),r,epsVal); % Fusion of HSI and pan image
-R_GF = guidedfilter(I_PAN(:,:,3),I_HSbicubic(:,:,maxInds(3)),r,epsVal); % Fusion of HSI and pan image
-IR_GF= guidedfilter(I_PAN(:,:,4),I_HSbicubic(:,:,maxInds(4)),r,epsVal); % Fusion of HSI and pan image
+B_GF = guidedfilter(I_PAN(:,:,1),refBandB_EdgePreserveInterpolation,r,epsVal); % Fusion of HSI and pan image
+G_GF = guidedfilter(I_PAN(:,:,2),refBandG_EdgePreserveInterpolation,r,epsVal); % Fusion of HSI and pan image
+R_GF = guidedfilter(I_PAN(:,:,3),refBandR_EdgePreserveInterpolation,r,epsVal); % Fusion of HSI and pan image
+IR_GF= guidedfilter(I_PAN(:,:,4),refBandIR_EdgePreserveInterpolation,r,epsVal); % Fusion of HSI and pan image
 
 %% imshow images
 %     h1 = figure(1);
@@ -76,10 +87,10 @@ IR_GF= guidedfilter(I_PAN(:,:,4),I_HSbicubic(:,:,maxInds(4)),r,epsVal); % Fusion
 %     subplot(133), imshow(IR_GF,[]);
 %%  end of showing images
 %%
-I_HS_MaskB = I_HSbicubic(:,:,maxInds(1)).*Mbicubic;
-I_HS_MaskG = I_HSbicubic(:,:,maxInds(2)).*Mbicubic;
-I_HS_MaskR = I_HSbicubic(:,:,maxInds(3)).*Mbicubic;
-I_HS_MaskIR= I_HSbicubic(:,:,maxInds(4)).*Mbicubic;
+I_HS_MaskB = refBandB_EdgePreserveInterpolation.*Mbicubic;
+I_HS_MaskG = refBandG_EdgePreserveInterpolation.*Mbicubic;
+I_HS_MaskR = refBandR_EdgePreserveInterpolation.*Mbicubic;
+I_HS_MaskIR= refBandIR_EdgePreserveInterpolation.*Mbicubic;
 %%%% residuals
 I_HS_MaskBR = I_HS_MaskB - B_GF.*Mbicubic;
 I_HS_MaskGR = I_HS_MaskG - G_GF.*Mbicubic;
@@ -89,10 +100,10 @@ I_HS_MaskIRR= I_HS_MaskIR- IR_GF.*Mbicubic;
 %%%% residual aradeðerleme
 
 % [agirlikMatrisiB] = agirliklarinHesaplanmasi(I_PAN(:,:,1), I_HS_MaskBR);
-[agirlikMatrisiB] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,1), I_HS_MaskBR,distPower);
-[agirlikMatrisiG] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,2), I_HS_MaskGR,distPower);
-[agirlikMatrisiR] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,3), I_HS_MaskRR,distPower);
-[agirlikMatrisiIR] = edgePreserveGuidedInterpolationAlg3(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
+[agirlikMatrisiB] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,1), I_HS_MaskBR,distPower);
+[agirlikMatrisiG] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,2), I_HS_MaskGR,distPower);
+[agirlikMatrisiR] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,3), I_HS_MaskRR,distPower);
+[agirlikMatrisiIR] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,4), I_HS_MaskIRR,distPower);
 
 % rows1 = 2:3:wm; cols1 = 2:3:hm;
 % I_HS_MaskBRorj = I_HS_MaskBR(rows1,cols1);
@@ -149,19 +160,23 @@ I_HS_IRE= IR_GF + agirlikMatrisiIR;
 %% end of show images
 %%
 %%%% ardýþýk oranlar üzerinden B seçilerek sonuç çýkarýlýyor
-sRatioB_cubic = zeros(wm,hm,size(sRatioB,3));
-sRatioG_cubic = zeros(wm,hm,size(sRatioG,3));
-sRatioR_cubic = zeros(wm,hm,size(sRatioR,3));
-sRatioIR_cubic= zeros(wm,hm,size(sRatioIR,3));
+sRatioB_EdgePreserveInterpolation = zeros(wm,hm,size(sRatioB,3));
+sRatioG_EdgePreserveInterpolation = zeros(wm,hm,size(sRatioG,3));
+sRatioR_EdgePreserveInterpolation = zeros(wm,hm,size(sRatioR,3));
+sRatioIR_EdgePreserveInterpolation= zeros(wm,hm,size(sRatioIR,3));
 for i=1:1:size(sRatioB,3)
     bandB = sRatioB(:,:,i);
     bandG = sRatioG(:,:,i);
     bandR = sRatioR(:,:,i);
     bandIR= sRatioIR(:,:,i);
-    sRatioB_cubic(:,:,i) = imresize(bandB,[wm hm], 'bicubic','Antialiasing',true);
-    sRatioG_cubic(:,:,i) = imresize(bandG,[wm hm], 'bicubic','Antialiasing',true);
-    sRatioR_cubic(:,:,i) = imresize(bandR,[wm hm], 'bicubic','Antialiasing',true);
-    sRatioIR_cubic(:,:,i)= imresize(bandIR,[wm hm], 'bicubic','Antialiasing',true);
+    [sRatioB_EdgePreserveInterpolation(:,:,i)] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,1),bandB,distPower);
+    [sRatioG_EdgePreserveInterpolation(:,:,i)] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,2),bandG,distPower);
+    [sRatioR_EdgePreserveInterpolation(:,:,i)] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,3),bandR,distPower);
+    [sRatioIR_EdgePreserveInterpolation(:,:,i)] = edgePreserveGuidedInterpolationAlg4(I_PAN(:,:,4),bandIR,distPower);
+%     sRatioB_cubic(:,:,i) = imresize(bandB,[wm hm], 'bicubic','Antialiasing',true);
+%     sRatioG_cubic(:,:,i) = imresize(bandG,[wm hm], 'bicubic','Antialiasing',true);
+%     sRatioR_cubic(:,:,i) = imresize(bandR,[wm hm], 'bicubic','Antialiasing',true);
+%     sRatioIR_cubic(:,:,i)= imresize(bandIR,[wm hm], 'bicubic','Antialiasing',true);
 end
 
 I_HS_BGRIR =zeros(wm,hm,dh);
@@ -191,37 +206,71 @@ I_HS_BGRIR =zeros(wm,hm,dh);
 
 I_PANds = zeros(wh,hh,dm);
 for i=1:1:dm
-    I_PANds(:,:,i) = imresize(I_PAN(:,:,i),[wh,hh],'bicubic','Antialiasing',true);
+%     I_PANds(:,:,i) = imresize(I_PAN(:,:,i),[wh,hh],'bicubic','Antialiasing',true);
+    I_PANds(:,:,i) = I_PAN(2:3:end-1,2:3:end-1,i);
 end
 
-ccVals = zeros(dh,dm);
+rmseVals = zeros(dh,dm);
 for i=1:1:dh
     bandH = I_HS(:,:,i);
     for j=1:1:dm
         bandP = I_PANds(:,:,j);
-        ccVals(i,j) = corr2(bandH,bandP);
+        rmseVals(i,j) = sqrt( sum(sum((bandH - bandP).^2)) );
     end
 end
 
-% figure(11), hold on,
-% plot(ccVals(:,1),'b','LineWidth',2);
-% plot(ccVals(:,2),'g','LineWidth',2);
-% plot(ccVals(:,3),'r','LineWidth',2);
-% plot(ccVals(:,4),'k','LineWidth',2);
-
-[~,ccInds] = max(ccVals,[],2);
+[~,rmseInds] = min(rmseVals,[],2);
 
 for i=1:1:dh
-    if ccInds(i) == 1
-        I_HS_BGRIR(:,:,i) = I_HS_BE.*sRatioB_cubic(:,:,i);
-    elseif ccInds(i) == 2
-        I_HS_BGRIR(:,:,i) = I_HS_GE.*sRatioG_cubic(:,:,i);
-    elseif ccInds(i) == 3
-        I_HS_BGRIR(:,:,i) = I_HS_RE.*sRatioR_cubic(:,:,i);
+    if rmseInds(i) == 1
+        I_HS_BGRIR(:,:,i) = I_HS_BE.*sRatioB_EdgePreserveInterpolation(:,:,i);
+    elseif rmseInds(i) == 2
+        I_HS_BGRIR(:,:,i) = I_HS_GE.*sRatioG_EdgePreserveInterpolation(:,:,i);
+    elseif rmseInds(i) == 3
+        I_HS_BGRIR(:,:,i) = I_HS_RE.*sRatioR_EdgePreserveInterpolation(:,:,i);
     else
-        I_HS_BGRIR(:,:,i) = I_HS_IRE.*sRatioIR_cubic(:,:,i);
+        I_HS_BGRIR(:,:,i) = I_HS_IRE.*sRatioIR_EdgePreserveInterpolation(:,:,i);
     end
 end
+
+
+% ccVals = zeros(dh,dm);
+% for i=1:1:dh
+%     bandH = I_HS(:,:,i);
+%     for j=1:1:dm
+%         bandP = I_PANds(:,:,j);
+%         ccVals(i,j) = corr2(bandH,bandP);
+%     end
+% end
+% 
+% % figure(11), hold on,
+% % plot(ccVals(:,1),'b','LineWidth',2);
+% % plot(ccVals(:,2),'g','LineWidth',2);
+% % plot(ccVals(:,3),'r','LineWidth',2);
+% % plot(ccVals(:,4),'k','LineWidth',2);
+% 
+% [~,ccInds] = max(ccVals,[],2);
+% 
+% for i=1:1:dh
+%     if ccInds(i) == 1
+%         I_HS_BGRIR(:,:,i) = I_HS_BE.*sRatioB_EdgePreserveInterpolation(:,:,i);
+%     elseif ccInds(i) == 2
+%         I_HS_BGRIR(:,:,i) = I_HS_GE.*sRatioG_EdgePreserveInterpolation(:,:,i);
+%     elseif ccInds(i) == 3
+%         I_HS_BGRIR(:,:,i) = I_HS_RE.*sRatioR_EdgePreserveInterpolation(:,:,i);
+%     else
+%         I_HS_BGRIR(:,:,i) = I_HS_IRE.*sRatioIR_EdgePreserveInterpolation(:,:,i);
+%     end
+% %     if ccInds(i) == 1
+% %         I_HS_BGRIR(:,:,i) = I_HS_BE.*sRatioB_cubic(:,:,i);
+% %     elseif ccInds(i) == 2
+% %         I_HS_BGRIR(:,:,i) = I_HS_GE.*sRatioG_cubic(:,:,i);
+% %     elseif ccInds(i) == 3
+% %         I_HS_BGRIR(:,:,i) = I_HS_RE.*sRatioR_cubic(:,:,i);
+% %     else
+% %         I_HS_BGRIR(:,:,i) = I_HS_IRE.*sRatioIR_cubic(:,:,i);
+% %     end
+% end
 %% imshow bands and plot signatures
 %
 %     figure(1),

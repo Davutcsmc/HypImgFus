@@ -1,4 +1,4 @@
-function [agirlikMatrisi] = edgePreserveInterpolationAlg3(refImg, agirlikMatrisi,distPower)
+function [agirlikMatrisi] = edgePreserveGuidedInterpolationAlg3(refImg, agirlikMatrisi,distPower)
 
 agirlikMatrisiYedek = agirlikMatrisi;      
 [wm,hm]=size(refImg);

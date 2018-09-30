@@ -22,7 +22,7 @@ end
 
 distVals = distVals./repmat(sum(distVals,1),[2,1]);
 
-for i=2:3:wm-2
+for i=2:3:wm-1
     for j=2:3:hm-2
         
         nPxls = refImg(i,j+1:j+2);
@@ -74,7 +74,7 @@ end
 distVals = distVals./repmat(sum(distVals,1),[2,1]);
 
 for i=2:3:wm-2
-    for j=2:3:hm-2
+    for j=2:3:hm-1
         
         nPxls = refImg(i+1:i+2,j);
         cPxls = refImg(i:3:i+3,j);
