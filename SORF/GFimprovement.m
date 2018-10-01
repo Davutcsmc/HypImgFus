@@ -46,37 +46,47 @@ for iii=2:2
     QI_GF_mGF_Res = QualityIndices(I_HS_mGF_Res(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
     
     %%%% B G R IR weighted ratio for GF
+%     distPower = 1;
+%     tic
+%     [ I_HS_mGF_Res21 ] = GF_BGRIR_Residual2( I_HS,I_PAN, dataset, distPower );
+%     disp(strcat('Comp. time (I_HS_mGF_Res21): ',num2str(toc)));
+%     QI_GF_mGF_Res21 = QualityIndices(I_HS_mGF_Res21(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+%     
+%     %%%% B G R IR weighted ratio for GF
+%     distPower = 1;
+%     tic
+%     [ I_HS_mGF_Res31 ] = GF_BGRIR_Residual3( I_HS,I_PAN, dataset, distPower );
+%     disp(strcat('Comp. time (I_HS_mGF_Res31): ',num2str(toc)));
+%     QI_GF_mGF_Res31 = QualityIndices(I_HS_mGF_Res31(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+%     
+%     distPower = 1;
+%     tic
+%     [ I_HS_mGF_Res41 ] = GF_BGRIR_Residual4( I_HS,I_PAN, dataset, distPower );
+%     disp(strcat('Comp. time (I_HS_mGF_Res41): ',num2str(toc)));
+%     QI_GF_mGF_Res41 = QualityIndices(I_HS_mGF_Res41(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+%     save('GF_BGRIR_Residual4','I_HS_mGF_Res41','QI_GF_mGF_Res41');
+    load('GF_BGRIR_Residual4');
+    
+%     distPower = 1;
+%     tic
+%     [ I_HS_mGF_Res61 ] = GF_BGRIR_Residual6( I_HS,I_PAN, dataset, distPower );
+%     disp(strcat('Comp. time (I_HS_mGF_Res61): ',num2str(toc)));
+%     QI_GF_mGF_Res61 = QualityIndices(I_HS_mGF_Res61(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+%     save('GF_BGRIR_Residual6','I_HS_mGF_Res61','QI_GF_mGF_Res61');
+    load('GF_BGRIR_Residual6');
+    
+%     distPower = 1;
+%     tic
+%     [ I_HS_mGF_Res71 ] = GF_BGRIR_Residual7( I_HS,I_PAN, dataset, distPower );
+%     disp(strcat('Comp. time (I_HS_mGF_Res71): ',num2str(toc)));
+%     QI_GF_mGF_Res71 = QualityIndices(I_HS_mGF_Res71(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+    
     distPower = 1;
     tic
-    [ I_HS_mGF_Res21 ] = GF_BGRIR_Residual2( I_HS,I_PAN, dataset, distPower );
-    disp(strcat('Comp. time (I_HS_mGF_Res21): ',num2str(toc)));
-    QI_GF_mGF_Res21 = QualityIndices(I_HS_mGF_Res21(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    
-    %%%% B G R IR weighted ratio for GF
-    distPower = 1;
-    tic
-    [ I_HS_mGF_Res31 ] = GF_BGRIR_Residual3( I_HS,I_PAN, dataset, distPower );
-    disp(strcat('Comp. time (I_HS_mGF_Res31): ',num2str(toc)));
-    QI_GF_mGF_Res31 = QualityIndices(I_HS_mGF_Res31(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    
-    distPower = 1;
-    tic
-    [ I_HS_mGF_Res41 ] = GF_BGRIR_Residual4( I_HS,I_PAN, dataset, distPower );
-    disp(strcat('Comp. time (I_HS_mGF_Res41): ',num2str(toc)));
-    QI_GF_mGF_Res41 = QualityIndices(I_HS_mGF_Res41(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    
-    distPower = 1;
-    tic
-    [ I_HS_mGF_Res61 ] = GF_BGRIR_Residual6( I_HS,I_PAN, dataset, distPower );
-    disp(strcat('Comp. time (I_HS_mGF_Res61): ',num2str(toc)));
-    QI_GF_mGF_Res61 = QualityIndices(I_HS_mGF_Res61(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    
-    distPower = 1;
-    tic
-    [ I_HS_mGF_Res71 ] = GF_BGRIR_Residual7( I_HS,I_PAN, dataset, distPower );
-    disp(strcat('Comp. time (I_HS_mGF_Res71): ',num2str(toc)));
-    QI_GF_mGF_Res71 = QualityIndices(I_HS_mGF_Res71(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
-    
+    [ I_HS_mGF_Res81 ] = GF_BGRIR_Residual8( I_HS,I_PAN, dataset, distPower );
+    disp(strcat('Comp. time (I_HS_mGF_Res81): ',num2str(toc)));
+    QI_GF_mGF_Res81 = QualityIndices(I_HS_mGF_Res81(5:end-4,5:end-4,:),I_REF(5:end-4,5:end-4,:),ratio);
+    save('GF_BGRIR_Residual8','I_HS_mGF_Res81','QI_GF_mGF_Res81');
     
 %     %%%% B G R IR weighted ratio for spatial GF
 %     tic
@@ -107,35 +117,35 @@ for iii=2:2
     %% end of pansharpining
     %% plot qualities
     
-    minCC = min( [ min( [ QI_GF_mGF_Res.ccMap QI_GF_mGF_Res21.ccMap ])] );
-    maxCC = max( [ max( [ QI_GF_mGF_Res.ccMap QI_GF_mGF_Res21.ccMap ])] );
+    minCC = min( [ min( [ QI_GF_mGF_Res.ccMap QI_GF_mGF_Res41.ccMap ])] );
+    maxCC = max( [ max( [ QI_GF_mGF_Res.ccMap QI_GF_mGF_Res41.ccMap ])] );
     figure(1111),hold on,
 %     plot(dataset.wavelength,QI_BayesSparse.ccMap,'b','LineWidth',2), hold on,
     plot(dataset.wavelength,QI_GFPCA.ccMap,'b','LineWidth',2), hold on,
 %     plot(dataset.wavelength,QI_GF_mGF.ccMap,'r','LineWidth',2),
     plot(dataset.wavelength,QI_GF_mGF_Res.ccMap,'r','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res21.ccMap,'g','LineWidth',2),    
-    plot(dataset.wavelength,QI_GF_mGF_Res31.ccMap,'k','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res41.ccMap,'m','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res61.ccMap,'c','LineWidth',2),  
-    plot(dataset.wavelength,QI_GF_mGF_Res71.ccMap,'y','LineWidth',2),  
-    legend('GFPCA','oransal GFR','oransal GFR2','oransal GFR3','oransal GFR4','oransal GFR6','oransal GFR7'), title('CC')
+%     plot(dataset.wavelength,QI_GF_mGF_Res21.ccMap,'g','LineWidth',2),    
+%     plot(dataset.wavelength,QI_GF_mGF_Res31.ccMap,'k','LineWidth',2),
+    plot(dataset.wavelength,QI_GF_mGF_Res41.ccMap,'g','LineWidth',2),
+    plot(dataset.wavelength,QI_GF_mGF_Res61.ccMap,'k','LineWidth',2),  
+    plot(dataset.wavelength,QI_GF_mGF_Res81.ccMap,'m','LineWidth',2),  
+    legend('GFPCA','oransal GFR','oransal GFR4','oransal GFR6','oransal GFR8'), title('CC')
     axis([min(dataset.wavelength) max(dataset.wavelength) 0.9 maxCC+0.01]);
     
-    minRMSE = min( [ min( [ QI_GF_mGF_Res.rmseBands; QI_GF_mGF_Res21.rmseBands ] ) ] );
-    maxRMSE = max( [ max( [ QI_GF_mGF_Res.rmseBands; QI_GF_mGF_Res21.rmseBands ] ) ] );
+    minRMSE = min( [ min( [ QI_GF_mGF_Res.rmseBands; QI_GF_mGF_Res41.rmseBands ] ) ] );
+    maxRMSE = max( [ max( [ QI_GF_mGF_Res.rmseBands; QI_GF_mGF_Res41.rmseBands ] ) ] );
     
     figure(11112), hold on,
 %     plot(dataset.wavelength,QI_BayesSparse.rmseBands,'b','LineWidth',2),hold on,
     plot(dataset.wavelength,QI_GFPCA.rmseBands,'b','LineWidth',2), hold on,
 %     plot(dataset.wavelength,QI_GF_mGF.rmseBands,'r','LineWidth',2),
     plot(dataset.wavelength,QI_GF_mGF_Res.rmseBands,'r','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res21.rmseBands,'g','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res31.rmseBands,'k','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res41.rmseBands,'m','LineWidth',2),
-    plot(dataset.wavelength,QI_GF_mGF_Res61.rmseBands,'c','LineWidth',2),    
-    plot(dataset.wavelength,QI_GF_mGF_Res71.rmseBands,'y','LineWidth',2),
-    legend('GFPCA','oransal GFR','oransal GFR2','oransal GFR3','oransal GFR4','oransal GFR6','oransal GFR7'), title('RMSE')
+%     plot(dataset.wavelength,QI_GF_mGF_Res21.rmseBands,'g','LineWidth',2),
+%     plot(dataset.wavelength,QI_GF_mGF_Res31.rmseBands,'k','LineWidth',2),
+    plot(dataset.wavelength,QI_GF_mGF_Res41.rmseBands,'g','LineWidth',2),
+    plot(dataset.wavelength,QI_GF_mGF_Res61.rmseBands,'k','LineWidth',2),    
+    plot(dataset.wavelength,QI_GF_mGF_Res81.rmseBands,'m','LineWidth',2),
+    legend('GFPCA','oransal GFR','oransal GFR4','oransal GFR6','oransal GFR8'), title('RMSE')
     axis([min(dataset.wavelength) max(dataset.wavelength) minRMSE maxRMSE+0.1]);
      
 %     figure(2222),
